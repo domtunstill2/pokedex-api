@@ -1,10 +1,11 @@
-const needle = require("needle");
+const {
+  fetchPokemonData,
+  // formatPokemonData,
+  getTranslatedData,
+} = require("./helpers");
 
-exports.getPokemonData = async (pokemon) => {
-  const options = {
-    json: true,
-  };
-  const query = `query getPokemonInfo {result: pokemon_v2_pokemonspecies(order_by: {id: asc}, where: {name: {_eq: "${pokemon}"}}) {  name  id  is_legendary  habitat: pokemon_v2_pokemonhabitat { name }  description: pokemon_v2_pokemonspeciesflavortexts(where: {language_id: {_eq: 9}}, limit: 1) { flavor_text }}}`;
+exports.get_pokemon_data = async (pokemon) => {
+  const pokeData = await fetchPokemonData(pokemon);
   const {
     body: {
       data: {
@@ -18,19 +19,20 @@ exports.getPokemonData = async (pokemon) => {
         ],
       },
     },
-  } = await needle(
-    "post",
-    "https://beta.pokeapi.co/graphql/v1beta",
-    {
-      query,
-    },
-    options
-  );
-  const formattedData = {
+  } = pokeData;
+  return {
     name,
     description: description.replace(/(\r\n|\n|\r|\f)/gm, " "),
     habitat,
     isLegendary,
   };
-  return formattedData;
+};
+
+exports.get_pokemon_translated_data = async (pokemon) => {
+  const formatedData = await this.get_pokemon_data(pokemon);
+  const transaltion =
+    formatedData.habitat === "cave" || formatedData.isLegendary
+      ? "yoda"
+      : "shakespeare";
+  return getTranslatedData(formatedData, transaltion);
 };
