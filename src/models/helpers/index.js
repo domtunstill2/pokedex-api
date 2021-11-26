@@ -9,47 +9,19 @@ exports.fetchPokemonData = (pokemon) => {
   return makeNeedleRequest(POKEAPI_URL, { query });
 };
 
-exports.formatPokemonData = (pokeData) => {
-  const {
-    body: {
-      data: {
-        result: [
-          {
-            name,
-            is_legendary: isLegendary,
-            habitat: { name: habitat },
-            description: [{ flavor_text: description }],
-          },
-        ],
-      },
-    },
-  } = pokeData;
-  return {
-    name,
-    description: description.replace(/(\r\n|\n|\r|\f)/gm, " "),
-    habitat,
-    isLegendary,
-  };
-};
-
-exports.getTranslatedData = async (pokeData) => {
-  const translatedData = await fetchDescriptionTranslation(
-    pokeData.description
-  );
-  return {
-    ...pokeData,
-    description: translatedData.body.contents.translated,
-  };
-};
-
-const fetchDescriptionTranslation = (text, type) => {
+exports.fetchDescriptionTranslation = (text, type) => {
   const fullUrl = `${TRANSLATE_URL}/${type}.json`;
   return makeNeedleRequest(fullUrl, { text });
 };
 
-const makeNeedleRequest = (url, data) => {
+const makeNeedleRequest = async (url, data) => {
   const options = {
     json: true,
   };
-  return needle(API_METHOD, url, data, options);
+  try {
+    const result = await needle(API_METHOD, url, data, options);
+    return result;
+  } catch (err) {
+    return { statusCode: 500, body: { error: { message: err.message } } };
+  }
 };
