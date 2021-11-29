@@ -6,7 +6,7 @@ Pokedex API
 
 ## Starting the local server in a docker container
 
-Clone this repo `git clone git@github.com:domtunstill/pokedex-api.git`
+Clone this repo `git clone git@github.com:domtunstill2/pokedex-api.git`
 
 Navigate to the repo directory `cd ./podedex-api`
 
@@ -24,7 +24,7 @@ Run tests by running `npm test`
 
 ## Starting the local server without using docker
 
-Clone this repo `git clone git@github.com:domtunstill/pokedex-api.git`
+Clone this repo `git clone git@github.com:domtunstill2/pokedex-api.git`
 
 Install node for your system if you haven't already https://nodejs.org/en/download/
 
