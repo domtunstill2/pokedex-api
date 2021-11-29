@@ -47,6 +47,7 @@ The base URL for all requests is `http://localhost:3000`
 Get information about a specific Pokemon.
 
 _Example_:
+`http://localhost:3000/pokemon/mewtwo`
 **_Response_**  
  `Status: 200 OK`
 
@@ -66,6 +67,7 @@ Get information about a specific Pokemon with a translated description.
 Limited to 5 requests per hour.
 
 _Example_:
+`http://localhost:3000/pokemon/translated/mewtwo`
 **_Response_**  
  `Status: 200 OK`
 
