@@ -79,7 +79,6 @@ describe("modelHelpers", () => {
         DESCRIPTION,
         TRANSLATION_TYPE
       );
-      console.log(result.body);
       expect(result.body).toEqual({
         contents: { translated: YODA_TRANSLATION },
       });

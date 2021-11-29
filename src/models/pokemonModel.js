@@ -33,9 +33,13 @@ exports.get_pokemon_translated_data = async (pokemon) => {
     transaltionType
   );
   if (translatedData.statusCode !== SUCCESS_CODE) {
+    const error =
+      translatedData.body.error && translatedData.body.error.message
+        ? translatedData.body.error.message
+        : translatedData.body;
     return {
       status: translatedData.statusCode,
-      error: translatedData.body,
+      error,
     };
   }
   return {

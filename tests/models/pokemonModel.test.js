@@ -114,7 +114,7 @@ describe("pokemonModel", () => {
         if (description === FAILED_DESCRIPTION) {
           return Promise.resolve({
             statusCode: SERVER_ERROR,
-            body: `Server error.`,
+            body: { error: { message: `Server error.` } },
           });
         }
         if (transaltionType === YODA) {
