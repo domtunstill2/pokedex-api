@@ -88,6 +88,8 @@ Next steps would be to add a cache to store results for two reasons.
 1. It's quicker than going to the external services everytime.
 2. The translation service has a rate limit of 5 requests an hour, which this cwould reduce the number of times requests go to this API. The pokemon API also has a fair usage policy so this would avoid hitting their API too often.
 
-Currently I return the error to the user regarding rate limiting on the translation API. In production this error may be handled differently, returning the original description with a message saying `it's unable to translate`.
+Currently I return all errors from the external APIs to the user including the rate limiting error on the translation API. In production this error may be handled differently, returning the original description if this was the desired product strategy.
 
-Would also add tests for the routes file and the server file.
+I would also add logging, especially for errors where we are communicating with the external API in case things change their end. I.e. payloads change so parameters are no longer in the same location or endpoint getting deprecated. This would help catching these issues as early as possible.
+
+I would also add tests for the routes file and the server file.
