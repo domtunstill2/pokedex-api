@@ -48,6 +48,7 @@ Get information about a specific Pokemon.
 
 _Example_:
 `http://localhost:3000/pokemon/mewtwo`
+
 **_Response_**  
  `Status: 200 OK`
 
@@ -68,6 +69,7 @@ Limited to 5 requests per hour.
 
 _Example_:
 `http://localhost:3000/pokemon/translated/mewtwo`
+
 **_Response_**  
  `Status: 200 OK`
 
