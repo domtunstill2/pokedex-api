@@ -1,6 +1,6 @@
-module.exports = (app) => {
-  const pokemon = require("../controllers/pokemonController");
+const pokemon = require("../controllers/pokemonController");
 
+module.exports = (app) => {
   // GET basic pokemon information
   app.route("/pokemon/:pokemonName").get(pokemon.get_pokemon);
 

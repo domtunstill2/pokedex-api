@@ -1,62 +1,45 @@
-const { fetchPokemonData, fetchDescriptionTranslation } = require("./helpers");
+const modelHelpers = require("./helpers");
+
+const SUCCESS_CODE = 200;
+const YODA_HABITAT = "cave";
 
 exports.get_pokemon_data = async (pokemon) => {
-  const pokeData = await fetchPokemonData(pokemon);
-  if (pokeData.statusCode !== 200) {
+  const pokeData = await modelHelpers.fetchPokemonData(pokemon);
+  if (pokeData.statusCode !== SUCCESS_CODE) {
     return {
-      status: 500,
-      error: `An error occured whislt trying catch your Pokemon. Try again.`,
+      status: pokeData.statusCode,
+      error: pokeData.body,
     };
   }
-  if (!pokeData.body.data.result.length) {
-    return {
-      status: 404,
-      error: `'${pokemon}' is not in our Pokedex, try searching for another Pokemon.`,
-    };
-  }
-  const {
-    body: {
-      data: {
-        result: [
-          {
-            name,
-            is_legendary: isLegendary,
-            habitat: { name: habitat },
-            description: [{ flavor_text: description }],
-          },
-        ],
-      },
-    },
-  } = pokeData;
   return {
-    name,
-    description: description.replace(/(\r\n|\n|\r|\f)/gm, " "),
-    habitat,
-    isLegendary,
+    name: pokeData.body.name,
+    description: pokeData.body.description[0].flavor_text,
+    habitat: pokeData.body.habitat.name,
+    isLegendary: pokeData.body.is_legendary,
   };
 };
 
 exports.get_pokemon_translated_data = async (pokemon) => {
-  const formatedData = await this.get_pokemon_data(pokemon);
-  if (formatedData.error) {
-    return formatedData;
+  const pokeData = await this.get_pokemon_data(pokemon);
+  if (pokeData.error) {
+    return pokeData;
   }
-  const transaltion =
-    formatedData.habitat === "cave" || formatedData.isLegendary
+  const transaltionType =
+    pokeData.habitat === YODA_HABITAT || pokeData.isLegendary
       ? "yoda"
       : "shakespeare";
-  const translatedData = await fetchDescriptionTranslation(
-    formatedData.description,
-    transaltion
+  const translatedData = await modelHelpers.fetchDescriptionTranslation(
+    pokeData.description,
+    transaltionType
   );
-  if (translatedData.statusCode !== 200) {
+  if (translatedData.statusCode !== SUCCESS_CODE) {
     return {
       status: translatedData.statusCode,
-      error: translatedData.body.error.message,
+      error: translatedData.body,
     };
   }
   return {
-    ...formatedData,
+    ...pokeData,
     description: translatedData.body.contents.translated,
   };
 };
