@@ -82,9 +82,10 @@ _Example_:
 }
 ```
 
-## Production
+## Production changes
 
 Next steps would be to add a cache to store results for two reasons.
-
 1. It's quicker than going to the external services everytime.
 2. The translation service has a rate limit of 5 requests an hour, which this cwould reduce the number of times requests go to this API. The pokemon API also has a fair usage policy so this would avoid hitting their API too often.
+
+Would also add tests for the routes file and the server file.
